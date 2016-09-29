@@ -3,7 +3,6 @@
 main.py 100行代码的贪吃蛇
 
 ![image](https://raw.githubusercontent.com/codetask/Snake-/master/1.png)
-![image](https://raw.githubusercontent.com/codetask/Snake-/master/2.png)
 
 main_bfs.py 通过BFS自动规划路径
 但是蛇身太长之后很容易找不到路径而死掉
