@@ -11,5 +11,6 @@ main_bfs2.py [实现贪吃蛇AI](http://mp.weixin.qq.com/s?__biz=MzA5ODUxOTA5Mg=
 只是做了一些微小的修改，把curses改为pygame
 
 to do list
+
 1. 蛇走过的路径看不清
 2. 可能会出现死循环
