@@ -118,6 +118,9 @@ def main():
             if event.type == pygame.QUIT:
                 sys.exit()
             if event.type == pygame.KEYDOWN:
+                pressed_keys = pygame.key.get_pressed()
+                if pressed_keys.count(1) > 1:
+                    continue
                 snake.changedirection(event.key)
                 # 死后按space重新
                 if event.key == pygame.K_SPACE and isdead:
