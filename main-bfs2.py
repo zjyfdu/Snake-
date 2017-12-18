@@ -8,8 +8,8 @@ import sys
 from random import randint
 
 # 蛇运动的场地长宽
-HEIGHT = 24
-WIDTH = 24
+HEIGHT = 25
+WIDTH = 25
 
 SCREEN_X = HEIGHT * 25
 SCREEN_Y = WIDTH * 25
@@ -91,7 +91,7 @@ def is_move_possible(idx, move):
 # board_refresh后，UNDEFINED值都变为了到达食物的路径长度
 # 如需要还原，则要重置它
 def board_reset(psnake, psize, pboard):
-    for i in xrange(FIELD_SIZE):
+    for i in range(FIELD_SIZE):
         if i == food:
             pboard[i] = FOOD
         elif is_cell_free(i, psize, psnake): # 该位置为空
@@ -113,7 +113,7 @@ def board_refresh(pfood, psnake, pboard):
         if inqueue[idx] == 1: 
             continue
         inqueue[idx] = 1
-        for i in xrange(4):
+        for i in range(4):
             if is_move_possible(idx, mov[i]):
                 if idx + mov[i] == psnake[HEAD]:
                     found = True
@@ -131,7 +131,7 @@ def board_refresh(pfood, psnake, pboard):
 def choose_shortest_safe_move(psnake, pboard):
     best_move = ERR
     min = SNAKE
-    for i in xrange(4):
+    for i in range(4):
         if is_move_possible(psnake[HEAD], mov[i]) and pboard[psnake[HEAD]+mov[i]]<min:
             min = pboard[psnake[HEAD]+mov[i]]
             best_move = mov[i]
@@ -142,7 +142,7 @@ def choose_shortest_safe_move(psnake, pboard):
 def choose_longest_safe_move(psnake, pboard):
     best_move = ERR
     max = -1
-    for i in xrange(4):
+    for i in range(4):
         if is_move_possible(psnake[HEAD], mov[i]) and pboard[psnake[HEAD]+mov[i]]<UNDEFINED and pboard[psnake[HEAD]+mov[i]]>max:
             max = pboard[psnake[HEAD]+mov[i]]
             best_move = mov[i]
@@ -156,7 +156,7 @@ def is_tail_inside():
     tmpboard[tmpsnake[tmpsnake_size-1]] = 0 # 虚拟地将蛇尾变为食物(因为是虚拟的，所以在tmpsnake,tmpboard中进行)
     tmpboard[food] = SNAKE # 放置食物的地方，看成蛇身
     result = board_refresh(tmpsnake[tmpsnake_size-1], tmpsnake, tmpboard) # 求得每个位置到蛇尾的路径长度
-    for i in xrange(4): # 如果蛇头和蛇尾紧挨着，则返回False。即不能follow_tail，追着蛇尾运动了
+    for i in range(4): # 如果蛇头和蛇尾紧挨着，则返回False。即不能follow_tail，追着蛇尾运动了
         if is_move_possible(tmpsnake[HEAD], mov[i]) and tmpsnake[HEAD]+mov[i]==tmpsnake[tmpsnake_size-1] and tmpsnake_size>3:
             result = False
     return result
@@ -183,14 +183,14 @@ def any_possible_move():
     board_refresh(food, snake, board)
     min = SNAKE
 
-    for i in xrange(4):
+    for i in range(4):
         if is_move_possible(snake[HEAD], mov[i]) and board[snake[HEAD]+mov[i]]<min:
             min = board[snake[HEAD]+mov[i]]
             best_move = mov[i]
     return best_move
 
 def shift_array(arr, size):
-    for i in xrange(size, 0, -1):
+    for i in range(size, 0, -1):
         arr[i] = arr[i-1]
 
 def new_food():
@@ -215,7 +215,8 @@ def make_move(pbest_move):
         board[snake[HEAD]] = SNAKE # 新的蛇头
         snake_size += 1
         score += 1
-        if snake_size < FIELD_SIZE: new_food()
+        if snake_size < FIELD_SIZE:
+            new_food()
     else: # 如果新加入的蛇头不是食物的位置
         board[snake[HEAD]] = SNAKE # 新的蛇头
         board[snake[snake_size]] = UNDEFINED # 蛇尾变为空格
@@ -270,7 +271,7 @@ def main():
     score = 1 #分数也表示蛇长
 
 
-    while  True:
+    while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -279,11 +280,15 @@ def main():
                     return main()
 
         screen.fill((255,255,255))
+        # for i in range(snake_size):
+        #     rect = pygame.Rect((snake[i]//WIDTH)*25,(snake[i]%WIDTH)*25,20,20)
+        #     pygame.draw.rect(screen,(136,0,21),rect,0)
+        linelist = [((snake[0]//WIDTH)*25+12, (snake[0]%WIDTH)*25)] if snake_size==1 else []
         for i in range(snake_size):
-            rect = pygame.Rect((snake[i]/WIDTH)*25,(snake[i]%WIDTH)*25,25,25)
-            pygame.draw.rect(screen,(136,0,21),rect,0)
+            linelist.append(((snake[i]//WIDTH)*25+12, (snake[i]%WIDTH)*25+12))
+        pygame.draw.lines(screen, (136,0,21), False, linelist, 20)
 
-        rect = pygame.Rect((food/WIDTH)*25,(food%WIDTH)*25,25,25)
+        rect = pygame.Rect((food//WIDTH)*25,(food%WIDTH)*25,20,20)
         pygame.draw.rect(screen,(20,220,39),rect,0)
 
         # 重置矩阵

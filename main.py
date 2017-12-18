@@ -40,9 +40,9 @@ class Snake(object):
     # 死亡判断
     def isdead(self):
         # 撞墙
-        if self.body[0].x  not in range(SCREEN_X):
+        if self.body[0].x not in range(SCREEN_X):
             return True
-        if self.body[0].y  not in range(SCREEN_Y):
+        if self.body[0].y not in range(SCREEN_Y):
             return True
         # 撞自己
         if self.body[0] in self.body[1:]:
